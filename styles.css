@@ -1,0 +1,9 @@
+
+
+.gridContainer{
+    border-style: solid;
+    display: flex;
+    flex-wrap: wrap;
+    width: 480px;
+    height: 480px;
+}
