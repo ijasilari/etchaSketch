@@ -13,3 +13,12 @@ divs.forEach((div) => {
         div.style.backgroundColor = 'black';
     })
 })
+
+ function resizeGrid() {
+    let gridSize = prompt("Enter number of squares per side", "16");
+    if (gridSize === null || gridSize === ""){
+        return;
+    } else {
+        alert("yeet");
+    }
+ }
