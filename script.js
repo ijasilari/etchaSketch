@@ -2,27 +2,25 @@ const gridContainer = document.querySelector('.gridContainer');
 const sizeHeader = document.querySelector('#sizeHeader');
 let divWidth = 30;
 let rainbow = false;
+let gridSize = 16;
+
+//painting on mousedown
+let mouseDown = false
+document.body.onmousedown = () => (mouseDown = true);
+document.body.onmouseup = () => (mouseDown = false);
 
 //Adds draw effect on all divs
-const setColor = () => {
-    let R = 0;
-    let B = 0;
-    let G = 0;
-
-    const divs = document.querySelectorAll('.gridDiv');
-    divs.forEach((div) => {
-        div.addEventListener('mouseenter', () => {
+const setColor = (e) => {
+    if (e.type === 'mouseover' && !mouseDown) return
             if(rainbow){
-                R = Math.floor(Math.random() * 256);
-                B = Math.floor(Math.random() * 256);
-                G = Math.floor(Math.random() * 256);
-                div.style.backgroundColor = `rgb(${R}, ${G},${B})`;
+                const R = Math.floor(Math.random() * 256);
+                const B = Math.floor(Math.random() * 256);
+                const G = Math.floor(Math.random() * 256);
+                e.target.style.backgroundColor = `rgb(${R}, ${G},${B})`;
             }else{
-                div.style.backgroundColor = "black";
+                e.target.style.backgroundColor = "black";
             }
             
-        })
-    })
 }
 
 const setRainbow = () => {
@@ -42,8 +40,11 @@ const renderGrid = (divsPerSide) => {
     //Creates divs inside grid
     for(let i = 0; i < (divsPerSide ** 2); i++) {
         const gridDiv = document.createElement('div');
+        gridDiv.setAttribute('draggable', false);
         gridDiv.classList.toggle('gridDiv');
         gridDiv.style.cssText = `width: ${divWidth}px; border-style: solid; border-width: 1px; box-sizing: border-box; border-color: #ededed;`;
+        gridDiv.addEventListener('mouseover', setColor);
+        gridDiv.addEventListener('mousedown', setColor);
         gridContainer.appendChild(gridDiv);
     }
     setColor();
@@ -51,9 +52,14 @@ const renderGrid = (divsPerSide) => {
     sizeHeader.textContent = `${divsPerSide} x ${divsPerSide}`
 };
 
+function clearAndRender() {
+    document.querySelectorAll('.gridDiv').forEach(e => e.remove());
+    renderGrid(gridSize);
+}
+
 
  function resizeGrid() {
-    let gridSize = prompt("Enter number of squares per side (0-100)", "16");
+    gridSize = prompt("Enter number of squares per side (0-100)", "16");
 
     if (gridSize === null || gridSize === ""){
         return;
@@ -62,12 +68,9 @@ const renderGrid = (divsPerSide) => {
         if(isNaN(gridSize) || (gridSize < 1 || gridSize > 100) ){
             alert("The input can only be number from 1 to 100!");
         }else{
-            //removes current divs from grid
-            document.querySelectorAll('.gridDiv').forEach(e => e.remove());
-            
-            renderGrid(gridSize);
+            clearAndRender();
         }
     }
  };
 
- renderGrid(16);
+ renderGrid(gridSize);
