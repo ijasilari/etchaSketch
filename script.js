@@ -1,5 +1,38 @@
 const gridContainer = document.querySelector('.gridContainer');
+const sizeHeader = document.querySelector('#sizeHeader');
 let divWidth = 30;
+let rainbow = false;
+
+//Adds draw effect on all divs
+const setColor = () => {
+    let R = 0;
+    let B = 0;
+    let G = 0;
+
+    const divs = document.querySelectorAll('.gridDiv');
+    divs.forEach((div) => {
+        div.addEventListener('mouseenter', () => {
+            if(rainbow){
+                R = Math.floor(Math.random() * 256);
+                B = Math.floor(Math.random() * 256);
+                G = Math.floor(Math.random() * 256);
+                div.style.backgroundColor = `rgb(${R}, ${G},${B})`;
+            }else{
+                div.style.backgroundColor = "black";
+            }
+            
+        })
+    })
+}
+
+const setRainbow = () => {
+    rainbow = true;
+    setColor();
+}
+const setBlack = () => {
+    rainbow = false;
+    setColor();
+}
 
 const renderGrid = (divsPerSide) => {
 
@@ -13,18 +46,14 @@ const renderGrid = (divsPerSide) => {
         gridDiv.style.cssText = `width: ${divWidth}px; border-style: solid; border-width: 1px; box-sizing: border-box; border-color: #ededed;`;
         gridContainer.appendChild(gridDiv);
     }
+    setColor();
 
-    //Adds draw effect on all divs
-    const divs = document.querySelectorAll('.gridDiv');
-    divs.forEach((div) => {
-        div.addEventListener('mouseenter', () => {
-            div.style.backgroundColor = 'black';
-        })
-    })
+    sizeHeader.textContent = `${divsPerSide} x ${divsPerSide}`
 };
 
+
  function resizeGrid() {
-    let gridSize = prompt("Enter number of squares per side", "16");
+    let gridSize = prompt("Enter number of squares per side (0-100)", "16");
 
     if (gridSize === null || gridSize === ""){
         return;
