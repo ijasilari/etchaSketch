@@ -33,7 +33,7 @@ const setBlack = () => {
 }
 
 const renderGrid = (divsPerSide) => {
-
+    document.querySelector('#sizeHeader').textContent = `${divsPerSide} x ${divsPerSide}`;
     //calculating divs width(600px is grids width)
     divWidth = 600 / divsPerSide;
 
